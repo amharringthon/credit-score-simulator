@@ -13,7 +13,13 @@ feature_columns = joblib.load("model/feature_columns.pkl")
 def preprocess_input(user_input):
     df = pd.DataFrame([user_input])
     df = pd.get_dummies(df)
+
+    # Reindex to match training columns (fill missing with 0s)
     df = df.reindex(columns=feature_columns, fill_value=0)
+
+    # Asegurar el mismo orden
+    df = df[feature_columns]
+
     df_scaled = scaler.transform(df)
     return df_scaled
 
@@ -78,6 +84,8 @@ if submitted:
         'Employment_Since': Employment_Since,
         'Foreign_Worker': Foreign_Worker
     }
+
+    print("USER INPUT:", user_input)
 
     X_processed = preprocess_input(user_input)
     prob = model.predict_proba(X_processed)[0][1]
