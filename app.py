@@ -40,8 +40,6 @@ def calculate_credit_score(prob):
     return int(300 + prob * (900 - 300))
 
 
-import plotly.graph_objects as go
-
 def plot_credit_score_gauge(score):
     fig = go.Figure(go.Indicator(
         mode="gauge+number",
